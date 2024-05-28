@@ -103,22 +103,3 @@ write.table(plink_recoding_file[,c("#CHROM:POS:REF:ALT", "ID")], file = "plinkre
 data1 = fread("chrX_v3.bim")
 subset(data1, V1 == X)
 write.table(data1, file = "chrX_hg19.bim"), row.names = F, col.names = F, quote = F)
-
-#### Step 5: combine into 1 file for polygenic scoring ####
-for i in {1..22}; do ./plink --bfile chr${i}_v3 --exclude allchrs-merge.missnp --maf 0.001 --make-bed --out ABCD_chr${i}_hg19_v2 --threads 10; done
-./plink --bfile ABCD_chr1_hg19_v2 --merge-list ABCD_merge.txt --maf 0.001 --make-bed --out ABCD_hg19_allchrs --threads 10
-
-for i in {1..22}; do rm ABCD_chr${i}_hg19_v2*; done
-
-#Retain European
-./plink --bfile ABCD_hg19_allchrs --keep ~/ABCD/ABCDgenotype/GWAS/QC4_european_grm.grm.id --make-bed --out ABCD_hg19_allchrs_europeanonly --maf 0.001 --threads 15
-
-
-
-
-#### for updating SNP names for lastQCb37 files
-plink_recoding = fread("plinkrecodingfile_format2.txt")
-lastQCb37.bim <- fread("lastQCb37.bim")
-plink_recoding_file = merge(plink_recoding, lastQCb37.bim, by.x = "#CHROM:POS", by.y = "V2")
-plink_recoding_file = plink_recoding_file[!duplicated(plink_recoding_file$`#CHROM:POS`), ]
-write.table(plink_recoding_file[,c("#CHROM:POS", "ID")], file = "plinkrecodingfile2_format2.txt", col.names = T, row.names = F, quote = F)
