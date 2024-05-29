@@ -1,4 +1,4 @@
-#### K-means clustering, based on TFEQ questionnaires collected at age 23
+#### K-means clustering, based on TFEQ questionnaires collected at age 23 ####
 library(factoextra)
 library(NbClust)
 library(fpc)
