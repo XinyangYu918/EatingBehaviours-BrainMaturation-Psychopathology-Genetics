@@ -1,6 +1,7 @@
 #### K-means clustering, based on TFEQ questionnaires collected at age 23
 library(factoextra)
-library("NbClust")
+library(NbClust)
+library(fpc)
 
 # Read and rescale data
 data <- read.csv("./imagen_tfeq.csv")
@@ -39,3 +40,34 @@ fviz_cluster(km, data = nor, palette = c("#E7B800", "#00AFBB", "#2E9FDF", "#FC4E
 # Save centers and clusters results
 write.csv(km$centers,"centers_imagen.csv")
 write.csv(km$cluster,"cluster_imagen.csv")
+
+# Assess the cluster-wise stability of a clustering of data
+kbest.p <-3
+kmeansCBI(nor,3,scaling=FALSE,runs=1,criterion="ch")
+
+kmeansruns(nor,krange = 3:10,criterion="ch",
+           iter.max=100,runs=1000,
+           scaledata=FALSE,alpha=0.001,
+           critout=FALSE,plot=FALSE)
+
+clboot <- clusterboot(nor,B=1000, distances=(inherits(nor, "distance")),
+                      bootmethod="boot",
+                      bscompare=TRUE, 
+                      multipleboot=FALSE,
+                      jittertuning=0.05, 
+                      noisetuning=c(0.05,4),
+                      subtuning=floor(nrow(nor)/2),
+                      clustermethod = kmeansCBI,3,
+                      noisemethod=FALSE,
+                      count=TRUE,
+                      showplots=FALSE,
+                      dissolution=0.5,
+                      recover=0.75,
+                      seed=NULL,
+                      datatomatrix=TRUE)
+
+# S3 method for class 'clboot'
+print(clboot,statistics=c("mean","dissolution","recovery"))
+
+# S3 method for class 'clboot'
+plot(clboot,xlim=c(0,1),breaks=seq(0,1,by=0.05))
