@@ -31,7 +31,6 @@ done
 
 # chr${1}_cleaned.bed/bim/fam save the data without any duplicate SNPs
 
-
 #### Step 2: Update the SNP names ####
 library(data.table)
 bim22 = fread("./chr22_cleaned.bim")
@@ -46,13 +45,13 @@ for (i in 1:21){
   update = rbind(update, bim_update)
 }
 
-plink_recoding = fread("Imputation_QC//plinkrecodingfile.txt")
+plink_recoding = fread("./Imputation_QC/plinkrecodingfile.txt")
 plink_recoding_file = merge(plink_recoding, update, by.x = "#CHROM:POS:REF:ALT", by.y = "V2")
 plink_recoding_file = plink_recoding_file[!duplicated(plink_recoding_file$`#CHROM:POS:REF:ALT`), ]
 
 write.table(plink_recoding_file[,c("#CHROM:POS:REF:ALT", "ID")], file = "plinkrecodingfile2.txt", col.names = T, row.names = F, quote = F)
 
-# run in plink
+# Run in plink
 for i in {1..22}; do ./plink --bfile ./chr${i}  --update-name ./plinkrecodingfile2.txt --make-bed --out ./chr${i}_v2; done
 
 #### Step 3: Update family names ####
@@ -66,7 +65,6 @@ fileimputed$oldIID = fileimputed$V2
 fileimputed = fileimputed %>% separate(V2, into = c('FID', 'IID'), sep = "_")
 write.table(fileimputed[,c("oldFID", "oldIID", "FID", "IID")], file = "updatefamenames.txt", row.names = F, col.names = F, quote = F)
 
-
 #### Step 4: Repeat the whole process for the X chromosome ####
 a = fread("chrX.info", header = T)
 a$Rsq = as.numeric(as.character(a$Rsq))
@@ -74,7 +72,7 @@ b = subset(a, Rsq > 0.4)
 b = subset(b, ALT_Frq > 0.001 & ALT_Frq < 0.999)
 write.table(b[,1], file = "chrXextract.txt", row.names = F, col.names = T, quote = F)
 
-# run in bash
+# Run in bash
 ./plink --vcf ./chrX.dose.vcf.gz --make-bed --out ./chrX  --extract ./chrXextract.txt --const-fid 0
 
 # Remove duplicate SNPs, run in bash
@@ -100,6 +98,7 @@ write.table(plink_recoding_file[,c("#CHROM:POS:REF:ALT", "ID")], file = "plinkre
 ./plink --bfile ./chrX_v2  --update-ids updatefamenames.txt --make-bed --out ./chrX_v3
 ./plink --bfile ./chrX_v3  --recode --out ./chrX_v4
 
+# Update bim file
 data1 = fread("chrX_v3.bim")
 subset(data1, V1 == X)
 write.table(data1, file = "chrX_hg19.bim"), row.names = F, col.names = F, quote = F)
