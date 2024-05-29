@@ -1,0 +1,56 @@
+#### Generate BMI PGS using PRS-cs ####
+https://github.com/getian107/PRScs
+
+# Use NaN server
+#!/bin/bash
+#SBATCH --mem=8G
+#SBATCH --cpus-per-task=2
+
+# Change to the directory
+cd /home/k21043376/genetic
+
+# Loop through chromosomes 1 to 23
+for chr in {1..23}; do
+  python3 PRScs.py --ref_dir=./ldblk_1kg_eur --bim allchrs_QCed_final --n_gwas=681275 --phi=0.01 --sst_file=./BMI_sumstats.txt --out_dir=./BMI --chrom=${chr}
+done
+
+# Merge the outputs using R
+library(data.table)
+bim22 <- fread("PRScs/BMI_PGS/BMI_phi1e-02/BMI_pst_eff_a1_b0.5_phi1e-02_chr22.txt")
+update <- bim22
+
+for (i in 1:21){
+  bim = fread(paste0("./PRScs/BMI_PGS/BMI_phi1e-02/BMI_pst_eff_a1_b0.5_phi1e-02_chr", i, ".txt"))
+  bim_update = bim
+  update = rbind(update, bim_update)
+}
+
+update = update[!duplicated(update$V2), ]
+
+# Save the results
+write.table(update, file = "PRScs/BMI_PGS/BMI_phi1e-02/BMI_pst_eff_a1_b0.5_phi1e-02_allchrs.txt", col.names = F, row.names = F, quote = F)
+
+# Get final scores using plink
+./plink --bfile allchrs_QCed --out AN_PRS_allchrs_QCed --score BMI_pst_eff_a1_b0.5_phi1e-02_allchrs.txt 2 4 6 sum center
+
+# Test variances explained by PGS for BMI phenotype using R
+BMI_PGS <- read.table("PRScs/BMI_PGS/BMI_phi1e-02/BMI_pst_eff_a1_b0.5_phi1e-02_allchrs.profile",header = T)
+BMI_PGS <- BMI_PGS[,-c(2:5)
+BMI_cov <- read.table("PRScs/Covar.cleaned.updated2.txt",header = T)
+BMI_cov <- BMI_cov[,-c(2)]
+BMI_pheno <- read.table("PRScs/BMI_PGS/BMI_all_matched.txt",header = T)
+names(BMI_pheno)[1] <- "FID"
+merge1 <- merge(BMI_cov, BMI_pheno, by = "FID")
+merge2 <- merge(BMI_PRS, merge1, by = "FID")
+
+# Run regression to get R2
+model_full <- lm(BMI_BL~SCORESUM+s1+s2+s3+s4+s5+s6+s7+GENDER_MASTER+batch+PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10, data = merge2,na.action = na.exclude)
+summary(model_full)
+summary(model_full)$r.squared
+
+model_null <- lm(BMI_BL~s1+s2+s3+s4+s5+s6+s7+GENDER_MASTER+batch+PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10, data = merge2,na.action = na.exclude)
+summary(model_null)
+summary(model_null)$r.squared
+
+R2 <- summary(model_full)$r.squared - summary(model_null)$r.squared
+print(R2)
