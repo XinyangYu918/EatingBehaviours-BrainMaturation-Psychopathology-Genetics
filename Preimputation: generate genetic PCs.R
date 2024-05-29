@@ -1,3 +1,7 @@
+#### Generate kinship relatedness matrix using KING software ####
+https://www.kingrelatedness.com/
+king -b lastQCb37_KGref_QC.bed --kinship 
+
 #### Run PCA in Genesis ####
 library(GWASTools)
 library(GENESIS)
