@@ -1,3 +1,4 @@
+#### Linear mixed models for ED symptoms (dieting, binge eating and purging symptoms) ####
 library(dplyr)
 library(lme4)
 library(lmerTest)
