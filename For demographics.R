@@ -1,4 +1,4 @@
-# To compare demographics among three groups
+#### Compare demographics among three groups ####
 library(dplyr)
 library(MASS)
 
@@ -9,6 +9,7 @@ df$age3 <- df$age3/365.25
 df$age4 <- df$age4/365.25
 df$IQ <- (df$IQ)/2
 
+# Get mean and SD values
 df_stats <- df %>%
   group_by(Cluster) %>%
   summarise(
@@ -36,6 +37,7 @@ df_stats <- df %>%
     BMIPGS_sd = sd(BMIPGS, na.rm = TRUE)
   )
 
+# Perform ANOVA
 age1 <- aov(age1 ~ Cluster, data=df)
 age2 <- aov(age2 ~ Cluster, data=df)
 age3 <- aov(age3 ~ Cluster, data=df)
@@ -50,15 +52,17 @@ UE <- aov(UE ~ Cluster, data=df)
 BMIPGS <- aov(BMIPGS ~ Cluster, data=df)
 
 summary(BMIPGS,digits=6)
+
+# Pairwise post-hoc test, using Bonferroni correction
 pairwise_results <- pairwise.t.test(df$BMIPGS, df$Cluster, p.adjust.method = "bonferroni")
 print(pairwise_results, digits = 4)
 
-# Create a contingency table
+# Create a contingency table, for Chi-square test
 contingency_table <- table(df$Cluster, df$sex)
 chi_square_result <- chisq.test(contingency_table)
 print(chi_square_result)
 
-# Post-hoc analysis
+# Post-hoc analysis, for Chi-square test
 pairwise_chisq <- function(table, p.adjust.method = "bonferroni") {
   # Get the levels of the factor
   levels <- rownames(table)
