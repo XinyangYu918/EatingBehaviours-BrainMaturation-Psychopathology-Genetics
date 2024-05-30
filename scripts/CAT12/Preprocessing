@@ -1,0 +1,46 @@
+T1 PRE-PROCESSING (CAT12)
+
+Inputs:
+-	T1 images from the IMAGEN database.
+-	Longitudinal pre-processing was only possible for images that were available at all relevant time points.
+ 
+Methods:
+-	All these data were pre-processed at the end of 2021/early 2022, using the CAT 12.8 (r1907) toolbox.
+-	Standard CAT12 procedure was used, with default settings. 
+(ex: batch_long_420s_1-420.m file)
+
+
+Outputs: 
+TRANSVERSAL
+/data/imagen/2.7/FU3/imaging/CAT12/BL
+/data/imagen/2.7/FU3/imaging/CAT12/FU2
+/data/imagen/2.7/FU3/imaging/CAT12/FU3
+
+4 sub-directories at each time point 
+You can find the meaning of all file types in Cat12's manual. (joint)
+
+LONGITUDINAL
+
+4 different CAT12 longitudinal pre-process were carried out to cover the 4 possible cases of longitudinal analyses: 
+-	/data/imagen/2.7/FU3/imaging/CAT12/longit/bas_fu2 
+-	/data/imagen/2.7/FU3/imaging/CAT12/longit/bas_fu3
+-	/data/imagen/2.7/FU3/imaging/CAT12/longit/fu2_fu3
+-	/data/imagen/2.7/FU3/imaging/CAT12/longit/bas_fu2_fu3
+
+The name of each main directory corresponds to the longitudinal pre-processing carried out. (e.g. fu2_fu3: T1 images available from Follow up 2 and Follow up 3)
+
+Ex. of images:
+mwmwp1r00…a1001.nii : modulated, normalized, segmented, GM at Baseline
+mwmwp1r00…_fu2.nii : modulated, normalized, segmented, GM at FU2
+mwmwp1r00…_fu3.nii : modulated, normalized, segmented, GM at FU3
+mwmwp2r00…a1001.nii : modulated, normalized, segmented, WM at Baseline
+…
+m: modulated		 w: normalized	p1: GM	p2: WM
+
+Quality Control:
+-	There was no specific visual quality control for these data.
+-	Only the quality control data produced by cat12 for cross-sectional processing is available (attached file:  IQR = quality index; GMV : grey matter volume; GMT, Grey matter thickness; TIV Total Intracranial Volumes.)
+-	All images information is in the "report" folders
+
+Data are for use within the framework of scientific proposals approved by the IMAGEN consortium Executive Committee. 
+Be cautious that their use in association with other data might arise personal information (e.g. raw T1 face reconstructions, genomic databases crossing & automatized learning), and have to be submitted to data transfer agreement.
