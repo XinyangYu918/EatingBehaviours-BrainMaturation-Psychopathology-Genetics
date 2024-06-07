@@ -42,19 +42,19 @@ results_1_2 <- data.frame(ROI=colnames(df_1_2)[5:73])
 
 for (c in 5:73)
 {
-  1_2_model <- lmer(df_1_2[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_1_2)
+  model_1_2 <- lmer(df_1_2[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_1_2)
   # Extract the summary
-  1_2_summary_model <- summary(1_2_model)
+  summary_model_1_2 <- summary(model_1_2)
   # Extract the t value and p-value for group:time interaction
-  1_2_beta_value <- 1_2_summary_model$coefficients[,"Estimate"]["group:time"]
-  1_2_se_value <- 1_2_summary_model$coefficients[,"Std. Error"]["group:time"]
-  1_2_t_value <- 1_2_summary_model$coefficients[,"t value"]["group:time"]
-  1_2_p_value <- 1_2_summary_model$coefficients[,"Pr(>|t|)"]["group:time"]
+  beta_value_1_2 <- summary_model_1_2$coefficients[,"Estimate"]["group:time"]
+  se_value_1_2 <- summary_model_1_2$coefficients[,"Std. Error"]["group:time"]
+  t_value_1_2 <- summary_model_1_2$coefficients[,"t value"]["group:time"]
+  p_value_1_2 <- summary_model_1_2$coefficients[,"Pr(>|t|)"]["group:time"]
   # Store the t and p values
-  results_1_2[c-4,2] <- 1_2_beta_value
-  results_1_2[c-4,3] <- 1_2_se_value
-  results_1_2[c-4,4] <- 1_2_t_value
-  results_1_2[c-4,5] <- 1_2_p_value
+  results_1_2[c-4,2] <- beta_value_1_2
+  results_1_2[c-4,3] <- se_value_1_2
+  results_1_2[c-4,4] <- t_value_1_2
+  results_1_2[c-4,5] <- p_value_1_2
 }
 
 names(results_1_2) <- c("ROI","beta","se","t","p")
@@ -74,16 +74,16 @@ df_1_3 <- df_1_3[,c(1,81,80,2,3:79)]
 results_1_3 <- data.frame(ROI=colnames(df_1_3)[5:73])
 for (c in 5:73)
 {
-  1_3_model <- lmer(df_1_3[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_1_3)
-  1_3_summary_model <- summary(1_3_model)
-  1_3_beta_value <- 1_3_summary_model$coefficients[,"Estimate"]["group:time"]
-  1_3_se_value <- 1_3_summary_model$coefficients[,"Std. Error"]["group:time"]
-  1_3_t_value <- 1_3_summary_model$coefficients[,"t value"]["group:time"]
-  1_3_p_value <- 1_3_summary_model$coefficients[,"Pr(>|t|)"]["group:time"]
-  results_1_3[c-4,2] <- 1_3_beta_value
-  results_1_3[c-4,3] <- 1_3_se_value
-  results_1_3[c-4,4] <- 1_3_t_value
-  results_1_3[c-4,5] <- 1_3_p_value
+  model_1_3 <- lmer(df_1_3[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_1_3)
+  summary_model_1_3 <- summary(model_1_3)
+  beta_value_1_3 <- summary_model_1_3$coefficients[,"Estimate"]["group:time"]
+  se_value_1_3 <- summary_model_1_3$coefficients[,"Std. Error"]["group:time"]
+  t_value_1_3 <- summary_model_1_3$coefficients[,"t value"]["group:time"]
+  p_value_1_3 <- summary_model_1_3$coefficients[,"Pr(>|t|)"]["group:time"]
+  results_1_3[c-4,2] <- beta_value_1_3
+  results_1_3[c-4,3] <- se_value_1_3
+  results_1_3[c-4,4] <- t_value_1_3
+  results_1_3[c-4,5] <- p_value_1_3
 }
 
 names(results_1_3) <- c("ROI","beta","se","t","p")
@@ -104,17 +104,17 @@ results_2_3 <- data.frame(ROI=colnames(df_2_3)[5:73])
 
 for (c in 5:73)
 {
-  2_3_model <- lmer(df_2_3[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_2_3)
-  2_3_summary_model <- summary(2_3_model)
-  2_3_beta_value <- 2_3_summary_model$coefficients[,"Estimate"]["group:time"]
-  2_3_se_value <- 2_3_summary_model$coefficients[,"Std. Error"]["group:time"]
-  2_3_t_value <- 2_3_summary_model$coefficients[,"t value"]["group:time"]
-  2_3_p_value <- 2_3_summary_model$coefficients[,"Pr(>|t|)"]["group:time"]
-  2_3_or_value <- exp(2_3_summary_model$coefficients[,"Estimate"]["group:time"])
-  results_2_3[c-4,2] <- 2_3_beta_value
-  results_2_3[c-4,3] <- 2_3_se_value
-  results_2_3[c-4,4] <- 2_3_t_value
-  results_2_3[c-4,5] <- 2_3_p_value
+  model_2_3 <- lmer(df_2_3[,c] ~ group * time + sex + (1|site/ParticipantID), REML = T,data = df_2_3)
+  summary_model_2_3 <- summary(model_2_3)
+  beta_value_2_3 <- summary_model_2_3$coefficients[,"Estimate"]["group:time"]
+  se_value_2_3 <- summary_model_2_3$coefficients[,"Std. Error"]["group:time"]
+  t_value_2_3 <- summary_model_2_3$coefficients[,"t value"]["group:time"]
+  p_value_2_3 <- summary_model_2_3$coefficients[,"Pr(>|t|)"]["group:time"]
+  2_3_or_value <- exp(summary_model_2_3$coefficients[,"Estimate"]["group:time"])
+  results_2_3[c-4,2] <- beta_value_2_3
+  results_2_3[c-4,3] <- se_value_2_3
+  results_2_3[c-4,4] <- t_value_2_3
+  results_2_3[c-4,5] <- p_value_2_3
   results_2_3[c-4,6] <- 2_3_or_value 
 }
 
@@ -136,8 +136,8 @@ df <- df[,-c(3,4,11,12)]
 
 # For groups1 and 2, the significant region is rfrontalpole
 res_1_2 <- data.frame(ID=df_1_2$ID)
-res1_2_model <- lmer(rfrontalpole ~ sex + (1|site/ParticipantID), REML = T,data = df_1_2)
-res_1_2[,2] <- resid(res1_2_model)
+resmodel_1_2 <- lmer(rfrontalpole ~ sex + (1|site/ParticipantID), REML = T,data = df_1_2)
+res_1_2[,2] <- resid(resmodel_1_2)
 names(res_1_2)[2] <- c("rfrontalpole")
 
 res_1_2$time <- df_1_2$time
@@ -191,8 +191,8 @@ df_2_3$ROI1_sum <- df_2_3 %>%
   select(rcaudalanteriorcingulate,rcaudalmiddlefrontal,lcuneus,llingual,lpericalcarine,lrostralmiddlefrontal,rrostralmiddlefrontal,lfrontalpole,rfrontalpole) %>% 
   rowSums()
 
-res2_3_model <- lmer(ROI1_sum ~ sex + (1|site/ParticipantID), REML = T,data = df_2_3)
-res_2_3[,2] <- resid(res2_3_model)
+resmodel_2_3 <- lmer(ROI1_sum ~ sex + (1|site/ParticipantID), REML = T,data = df_2_3)
+res_2_3[,2] <- resid(resmodel_2_3)
 names(res_2_3)[2] <- c("ROI1_sum")
 
 res_2_3$time <- df_2_3$time
