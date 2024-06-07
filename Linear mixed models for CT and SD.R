@@ -110,12 +110,12 @@ for (c in 5:73)
   se_value_2_3 <- summary_model_2_3$coefficients[,"Std. Error"]["group:time"]
   t_value_2_3 <- summary_model_2_3$coefficients[,"t value"]["group:time"]
   p_value_2_3 <- summary_model_2_3$coefficients[,"Pr(>|t|)"]["group:time"]
-  2_3_or_value <- exp(summary_model_2_3$coefficients[,"Estimate"]["group:time"])
+  or_value_2_3 <- exp(summary_model_2_3$coefficients[,"Estimate"]["group:time"])
   results_2_3[c-4,2] <- beta_value_2_3
   results_2_3[c-4,3] <- se_value_2_3
   results_2_3[c-4,4] <- t_value_2_3
   results_2_3[c-4,5] <- p_value_2_3
-  results_2_3[c-4,6] <- 2_3_or_value 
+  results_2_3[c-4,6] <- or_value_2_3 
 }
 
 names(results_2_3) <- c("ROI","beta","se","t","p","OR")
