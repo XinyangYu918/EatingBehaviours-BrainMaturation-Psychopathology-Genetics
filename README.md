@@ -1,5 +1,6 @@
 ## EatingBehaviours, BrainMaturation, Psychopathology, and Genetics
-Custom codes written for the manuscript: Relationships between brain maturation, psychopathology, genetic risk and eating behaviours across adolescence
+Custom codes are written for the manuscript: Relationships between eating behaviours, psychopathology, brain maturation and genetic risk for obesity in a longitudinal adolescent cohort study
+
 
 ### Structural MRI processing using CAT12
 Preprocessing.txt  
